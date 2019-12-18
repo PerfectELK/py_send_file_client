@@ -17,15 +17,17 @@ def sendFile(host, port, file_name):
     data_len = 0
     if str(data, 'UTF-8') == '1':
         while True:
-            _data = _f.read(1024 * 8)
+            _data = _f.read(4096)
             s.send(_data)
-            _d = s.recv(1024 * 8)
+            _d = s.recv(4096)
             if not _data:
+                s.send(b'')
+                s.close()
                 break
             _new_time = time.time()
             data_len += len(_data)
             print("Средняя скорость передачи {0} мб.сек".format((data_len / (_new_time - _time)) / 1024 / 1024))
-    s.close()
+
 
 
 def get_ip(login, password):
